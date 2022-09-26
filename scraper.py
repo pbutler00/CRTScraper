@@ -12,11 +12,11 @@ client = ScrapingBeeClient(api_key=our_api_key)
 
 news_data = pd.Dataframe(columns=['Title','Author','Date','Text','Summary','Keywords'])
 
-wapo = gn.search('Critical Race Theory site:washingtonpost.com before:'+start_day'after:'+end_day)
-msnbc = gn.search('Critical Race Theory site:msnbc.com before:'+start_day'after:'+end_day)
-cnn = gn.search('Critical Race Theory site:cnn.com before:'+start_day'after:'+end_day)
-nyt = gn.search('Critical Race Theory site:nytimes.com before:'+start_day'after:'+end_day)
-fox = gn.search('Critical Race Theory site:foxnews.com before:'+start_day'after:'+end_day)
+wapo = gn.search('Critical Race Theory site:washingtonpost.com before:'+start_day+'after:'+end_day)
+msnbc = gn.search('Critical Race Theory site:msnbc.com before:'+start_day+'after:'+end_day)
+cnn = gn.search('Critical Race Theory site:cnn.com before:'+start_day+'after:'+end_day)
+nyt = gn.search('Critical Race Theory site:nytimes.com before:'+start_day+'after:'+end_day)
+fox = gn.search('Critical Race Theory site:foxnews.com before:'+start_day+'after:'+end_day)
 
 def add_to_df(df, links):
     for link in links:
