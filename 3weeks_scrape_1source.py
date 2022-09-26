@@ -14,6 +14,7 @@ import requests
 from scrapingbee import ScrapingBeeClient
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
+import re
 
 #config will allow us to access the specified url for which we are #not authorized. Sometimes we may get 403 client error while parsing #the link to download the article.
 
