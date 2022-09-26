@@ -14,9 +14,10 @@ import requests
 from scrapingbee import ScrapingBeeClient
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
-import re
 
-#config will allow us to access the specified url for which we are #not authorized. Sometimes we may get 403 client error while parsing #the link to download the article.
+
+#config will allow us to access the specified url for which we are #not authorized. 
+#Sometimes we may get 403 client error while parsing #the link to download the article.
 
 count = 0
 count2 = 0
@@ -55,10 +56,7 @@ wapo_doc_1 = docx.Document()
 wapo_doc_2 = docx.Document()
 wapo_doc_3 = docx.Document()
 
-
 client = ScrapingBeeClient(api_key=our_api_key)
-
-
 
 def doc_maker(your_doc, links, save_link):
     if len(links) == 0:

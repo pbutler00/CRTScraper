@@ -3,20 +3,35 @@ from newspaper import Config
 import requests
 from scrapingbee import ScrapingBeeClient
 import nltk
+import re
 import pandas as pd
 nltk.download('punkt')
+
+cnn_date_re = r"[0-9]{4}\/[0-9]{2}\/[0-9]{2}"
 
 our_api_key = "O8IZ2YUTDJ0TK9YV2LY7EAFMM0TB9ID6PGPVZOYA7JIGK33RILWEG28T2VRNBCVRVTV3499R9Z1OZ580"
 gn = GoogleNews()
 client = ScrapingBeeClient(api_key=our_api_key)
 
-news_data = pd.Dataframe(columns=['Title','Author','Date','Text','Summary','Keywords'])
+news_data = pd.Dataframe(columns=['Title','Author','Date','Text','Summary','Keywords','URL','Source'])
 
-wapo = gn.search('Critical Race Theory site:washingtonpost.com before:'+start_day+'after:'+end_day)
-msnbc = gn.search('Critical Race Theory site:msnbc.com before:'+start_day+'after:'+end_day)
-cnn = gn.search('Critical Race Theory site:cnn.com before:'+start_day+'after:'+end_day)
-nyt = gn.search('Critical Race Theory site:nytimes.com before:'+start_day+'after:'+end_day)
-fox = gn.search('Critical Race Theory site:foxnews.com before:'+start_day+'after:'+end_day)
+sites = ['washingtonpost.com', 'msnbc.com', 'cnn.com', 'nytimes.com', 'foxnews.com']
+
+articles = []
+for site in sites:
+    if site != "cnn.com":
+        new_articles = search(site)
+        articles += new_articles
+    else:
+        # do something to correct the CNN sourcing
+        new_articles = search(site)
+        articles += new_articles
+
+
+def search(site):
+    articles = gn.search('Critical Race Theory site:' + site + ' before:'+start_day+'after:'+end_day)
+    return articles
+
 
 def add_to_df(df, links):
     for link in links:
@@ -26,32 +41,22 @@ def add_to_df(df, links):
         article.parse()
         article.nlp()
 
+        title = authors = date = text = summary = keywords = url = source = 'None'
+
         if article.title:
             title = article.title
-        else:
-            title = 'None'
         if article.authors:
             authors = article.authors
-        else:
-            authors = 'None'
         if article.publish_date:
             date = article.publish_date
-        else:
-            date = 'None'
         if article.text:
             text = article.text
-        else:
-            text = 'None'
         if article.summary:
             summary = article.summary
-        else:
-            summary = 'None'
         if article.keywords:
             keywords = article.keywords
-        else:
-            keywords = 'None'
 
-        df = df.append({'Title':title,'Author':author,'Date':date,'Text':text,'Summary':summary,'Keywords':keywords})
+        df = df.append({'Title':title,'Author':authors,'Date':date,'Text':text,'Summary':summary,'Keywords':keywords,'URL':url,'Source':source)
     return df
 
 
