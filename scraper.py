@@ -1,40 +1,25 @@
+from pygooglenews import GoogleNews
 from newspaper import Article
 from newspaper import Config
 import requests
 from scrapingbee import ScrapingBeeClient
 import nltk
-import re
 import pandas as pd
-nltk.download('punkt')
 
 cnn_date_re = r"[0-9]{4}\/[0-9]{2}\/[0-9]{2}"
-
 our_api_key = "O8IZ2YUTDJ0TK9YV2LY7EAFMM0TB9ID6PGPVZOYA7JIGK33RILWEG28T2VRNBCVRVTV3499R9Z1OZ580"
 gn = GoogleNews()
 client = ScrapingBeeClient(api_key=our_api_key)
 
-news_data = pd.Dataframe(columns=['Title','Author','Date','Text','Summary','Keywords','URL','Source'])
-
-sites = ['washingtonpost.com', 'msnbc.com', 'cnn.com', 'nytimes.com', 'foxnews.com']
-
-articles = []
-for site in sites:
-    if site != "cnn.com":
-        new_articles = search(site)
-        articles += new_articles
-    else:
-        # do something to correct the CNN sourcing
-        new_articles = search(site)
-        articles += new_articles
-
-
 def search(site):
-    articles = gn.search('Critical Race Theory site:' + site + ' before:'+start_day+'after:'+end_day)
+    # articles = gn.search('Critical Race Theory site:' + site + ' before:'+start_day+'after:'+end_day)
+    articles = gn.search('Critical Race Theory site:' + site + ' before:2022-06-5 after:2022-06-1')
     return articles
 
 
 def add_to_df(df, links):
     for link in links:
+        print(link["link"])
         raw_html = client.get(link["link"])
         article = Article('')
         article.download(raw_html.content)
@@ -56,8 +41,30 @@ def add_to_df(df, links):
         if article.keywords:
             keywords = article.keywords
 
-        df = df.append({'Title':title,'Author':authors,'Date':date,'Text':text,'Summary':summary,'Keywords':keywords,'URL':url,'Source':source)
+        df = df.append({'Title':title,'Author':authors,'Date':date,'Text':text,'Summary':summary,'Keywords':keywords,'URL':url,'Source':source}, ignore_index = True)
     return df
+
+def main():
+
+    news_data = pd.DataFrame(columns=['Title','Author','Date','Text','Summary','Keywords','URL','Source'])
+
+    #'washingtonpost.com', 'msnbc.com', 'cnn.com', 'nytimes.com', 'foxnews.com'
+    sites = ['washingtonpost.com', 'msnbc.com', 'cnn.com', 'nytimes.com', 'foxnews.com']
+
+    articles = {}
+    for site in sites:
+        print(site)
+        new_articles = search(site)
+        articles.update(new_articles)
+
+    news_data = add_to_df(news_data, articles["entries"])
+
+    writer = pd.ExcelWriter('news-data-excel.xlsx')
+    news_data.to_excel(writer)
+    writer.save()
+
+if __name__ == "__main__":
+    main()
 
 
 
