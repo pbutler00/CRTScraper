@@ -26,7 +26,7 @@ def add_to_df(df, links):
         article.parse()
         article.nlp()
 
-        title = authors = date = text = summary = keywords = url = source = 'None'
+        title = authors = fdate = text = summary = keywords = url = source = 'None'
 
         if article.title:
             title = article.title
@@ -34,6 +34,8 @@ def add_to_df(df, links):
             authors = article.authors
         if article.publish_date:
             date = article.publish_date
+            fdate = date.strftime('%m-%d-%Y')
+            print(fdate)
         if article.text:
             text = article.text
         if article.summary:
@@ -41,7 +43,7 @@ def add_to_df(df, links):
         if article.keywords:
             keywords = article.keywords
 
-        df = df.append({'Title':title,'Author':authors,'Date':date,'Text':text,'Summary':summary,'Keywords':keywords,'URL':url,'Source':source}, ignore_index = True)
+        df = df.append({'Title':title,'Author':authors,'Date':fdate,'Text':text,'Summary':summary,'Keywords':keywords,'URL':url,'Source':source}, ignore_index = True)
     return df
 
 def main():
@@ -51,13 +53,10 @@ def main():
     #'washingtonpost.com', 'msnbc.com', 'cnn.com', 'nytimes.com', 'foxnews.com'
     sites = ['washingtonpost.com', 'msnbc.com', 'cnn.com', 'nytimes.com', 'foxnews.com']
 
-    articles = {}
     for site in sites:
         print(site)
         new_articles = search(site)
-        articles.update(new_articles)
-
-    news_data = add_to_df(news_data, articles["entries"])
+        news_data = add_to_df(news_data, new_articles["entries"])
 
     writer = pd.ExcelWriter('news-data-excel.xlsx')
     news_data.to_excel(writer)
