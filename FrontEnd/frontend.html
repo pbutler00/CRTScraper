@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Metro UI -->
+    <link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4/css/metro-all.min.css">
+        <title>Critical Race Theory Database Search</title>
+        <link rel="stylesheet"href="frontend.css">
+        <script src="scripts/jquery.min.js"></script>
+        <script src="scripts/frontend.js"></script>
+    </head>
+    <body>
+        <script src="https://cdn.korzh.com/metroui/v4/js/metro.min.js"></script>
+        <nav class="navigation">
+            <ul>
+                <li><a href="default.asp">Home</a></li>
+                <li><a href="news.asp">Recent searches</a></li>
+                <li><a href="contact.asp">Contact</a></li>
+                <li><a href="about.asp"></a>About this page</li>
+            </ul>
+        </nav>
+        
+        <div class="container">
+            <h1>CRT Scraper Database</h1>
+            
+            <h2>Search</h2>
+            <form id="search-form"role="form">
+                <p>
+                <label>KEYWORD</br> <input name="kw1" type="text" size="30" id="kw1" placeholder='e.g."Principal"'></label>
+                <select name="fields" id="fields">
+                    <option value="all fields">All fields</option>
+                    <option value="title">Title</option>
+                    <option value="full text">Full Text</option>
+                    <option value="tags">Tags</option>
+                </select>
+                </p>
+
+                <p class="input-fields">
+                    <label>KEYWORD</br> 
+                        <select name="andor" id="andor">
+                        <option value="and" id="and">AND</option>
+                        <option value="or" id="or">OR</option>
+                        <option value="not" id="not">NOT</option>
+                    </select>
+
+                    <input name="kw1" type="text" size="30" id="kw1"placeholder='e.g."Election"'></label>
+                    
+                    <select name="fields" id="fields">
+                        <option value="all fields">All fields</option>
+                        <option value="title">Title</option>
+                        <option value="full text">Full Text</option>
+                        <option value="tags">Tags</option>
+                    </select>
+                </p>
+                <p>
+                    <button class="pagebutton" id="add-search-field">Add keyword</button>
+                </p>
+
+                <h2>Narrow Results</h2>
+                <p>
+                    <label for="date"><h3>PUBLICATION DATE </h3></label>
+                    <label>FROM
+                        <input name="from" type="text" data-role="calendarpicker" data-input-format="%m/%d/%y" value="1/1/2017">
+                    </label>
+                    <label>TO
+                        <input name="to" type="text" data-role="calendarpicker" data-input-format="%m/%d/%y" value="8/31/2022">
+                    </label>
+                </p>
+                <p>
+                    <label for="sources"><h3>SOURCES</h3>
+                        <label>
+                            <input name="all" type="checkbox" id="all" checked>
+                        ALL SOURCES</label>
+                        <label>
+                            <input name="cnn" type="checkbox" id="cnn">
+                        CNN</label>
+                        <label>
+                            <input name="fox" type="checkbox" id="fox">
+                        FOX</label>
+                        <label>
+                            <input name="wapo" type="checkbox" id="wapo">
+                        WASHINGTON POST</label>
+                        <label>
+                            <input name="msnbc" type="checkbox" id="msnbc">
+                        MSNBC</label>
+                        <label>
+                            <input name="nytimes" type="checkbox" id="nytimes">
+                        NY TIMES</label>
+                    </label>
+
+                    <label for="type"><h3>ARTICLE TYPE</h3>
+                        <select name="type" id="type">
+                            <option value="all">All</option>
+                            <option value="oped">Op-Ed</option>
+                            <option value="journalistic">News Report</option>
+                            <option value="non-text">Non-Textual</option>
+                        </select>
+                    </label></br></br>
+                    <button class="pagebutton"id="submitbtn" >Submit search</button>
+                </p>
+            </form>
+
+            <!-- this is where the form interaction will happen -->
+            <!-- <?php
+            $search_term_1 = "";
+            $search_term_2 = "";
+            echo "Searching for... " . $search_term_1 . "<br>";
+            ?> -->
+
+        </div>
+    </body>
+</html>
+
+<!--  GRACE TO DO:source (series of check boxes), op-ed vs journalistic, and submit button called "Search"-->
+<!-- PETER TO DO: research ways to make webapp for database, come up with plan. -->
