@@ -27,16 +27,37 @@
 
         <h2>Search Results</h2>
 
+        <script>
+            var element = `
+            <p>
+            <h3> Sorry, no articles were found with this search.</h3>
+            </p>
+            `
+        </script>
+
         {% for item in rows %}
-        <p>
+        <script>
+            element = `
+            <p>
             <h3><a class="link" href="{{ item['URL'] }}">{{ item['Title'] }}</a></h3>
-            <em>{{ item['Author'][1:-1] }}</em>
-        </p>
+            <span class="smalltext">{{ item['Author'][1:-1] }}</span></br>
+            <span class="smalltext">({{ item['Date'] }}) From: <em>{{ item['Source'] }}</em></span>
+            </p><hr class="new">
+            `
+            $(".container").append(element);
+        </script>
         {% endfor %}
 
-        <!-- <p>{{ rows[0]['Title'] }}</p>
-        <p>{{ rows[0]['Author'] }}</p>
-        <p>{{ rows }}</p> -->
+        <script>
+            if (element == `
+            <p>
+            <h3> Sorry, no articles were found with this search.</h3>
+            </p>
+            `){
+                $(".container").append(element);
+            }
+        </script>
+
     </div>
 
     
