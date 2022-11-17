@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, g
 import sqlite3
+import datetime
 
-DATABASE = 'C:/Users/jackd/Desktop/FrontEnd 11-15/data.db'
+DATABASE = 'C:/Users/jackd/Desktop/FrontEnd 11-16 V2/data.db'
 
 views = Blueprint("views", __name__)
 
@@ -53,6 +54,7 @@ def results():
             andors.append(request.form.get("andor"+str(counter)+""))
             counter += 1
 
+        counter = len(keywords)
         seperate_searches = []
         for i in range(counter):
             if fields[i] == "Title":
@@ -68,29 +70,42 @@ def results():
                                          query_db("SELECT * FROM data WHERE Author LIKE '%"+ keywords[i] +"%'") +
                                          query_db("SELECT * FROM data WHERE Text LIKE '%"+ keywords[i] +"%'") +
                                          query_db("SELECT * FROM data WHERE Keywords LIKE '%"+ keywords[i] +"%'"))
-
         
         whole_search = []
-        for index in range(len(andors)):
-            item = andors[index]
-            if item == 'and':
-                for row in seperate_searches[index+1]:
-                    if row in seperate_searches[0]:
-                        whole_search.append(row)
+        if (len(keywords) > 1):
+            for index in range(len(andors)):
+                item = andors[index]
+                if item == 'and':
+                    for row in seperate_searches[index+1]:
+                        if row in seperate_searches[0]:
+                            whole_search.append(row)
 
-            elif item == 'or':
-                for row in seperate_searches[index+1]:
-                    if row not in seperate_searches[0]:
-                        whole_search.append(row)
+                elif item == 'or':
+                    for row in seperate_searches[index+1]:
+                        if row not in seperate_searches[0]:
+                            whole_search.append(row)
 
-            elif item == 'not':
-                for row in seperate_searches[0]:
-                    if row not in seperate_searches[index+1]:
-                        whole_search.append(row)
+                elif item == 'not':
+                    for row in seperate_searches[0]:
+                        if row not in seperate_searches[index+1]:
+                            whole_search.append(row)
+        else:
+            whole_search = seperate_searches[0]
 
         start = request.form.get("from")
+        start_dt = datetime.date(int(start[0:4]), int(start[5:7]), int(start[8:]))
         end = request.form.get("to")
+        end_dt = datetime.date(int(end[0:4]), int(end[5:7]), int(end[8:]))
 
+        for row in whole_search:
+            date = row['Date']
+            slash1= date.find('/')
+            slash2 = date.rfind('/')
+            dt_obj = datetime.date(int(date[slash2 + 1:]), int(date[:slash1]), int(date[slash1 + 1: slash2]))
+            if (dt_obj < start_dt) or (dt_obj > end_dt):
+                whole_search.remove(row)
+        
+        whole_search_V2 = []
         all_sources = request.form.get("all")
         cnn = request.form.get("cnn")
         fox = request.form.get("fox")
@@ -98,5 +113,41 @@ def results():
         msnbc = request.form.get("msnbc")
         nytimes = request.form.get("nytimes")
 
+        if (all_sources):
+            whole_search_V2 = whole_search
+        else:
+            for row in whole_search:
+                if (cnn):
+                    if (row['Source'] == 'www.cnn.com'):
+                        whole_search_V2.append(row)
+                if (fox):
+                    if (row['Source'] == 'www.foxnews.com'):
+                        whole_search_V2.append(row)
+                if (wapo):
+                    if (row['Source'] == 'www.washingtonpost.com'):
+                        whole_search_V2.append(row)
+                if (msnbc):
+                    if (row['Source'] == 'www.msnbc.com'):
+                        whole_search_V2.append(row)
+                if (nytimes):
+                    if (row['Source'] == 'www.nytimes.com'):
+                        whole_search_V2.append(row)
+
+        whole_search_V3 = []
         article_type = request.form.get("type")
-        return render_template("results.html", whole_search = whole_search)
+
+        if (article_type == "all"):
+            whole_search_V3 = whole_search_V2
+        else:
+            for row in whole_search_V2:
+                if (article_type == "oped"):
+                    if (row['Opinion'] == "Opinion"):
+                        whole_search_V3.append(row)
+                if (article_type == "journalistic"):
+                    if (row['Opinion'] == "Non-Opinion"):
+                        whole_search_V3.append(row)
+                if (article_type == "non-text"):
+                    if (row['Format'] == "Non-Text"):
+                        whole_search_V3.append(row)
+
+        return render_template("results.html", rows = whole_search_V3)
