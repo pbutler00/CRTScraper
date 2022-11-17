@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, g
 import sqlite3
 import datetime
 
-DATABASE = 'C:/Users/jackd/Desktop/FrontEnd 11-16 V2/data.db'
+DATABASE = 'data.db'
 
 views = Blueprint("views", __name__)
 
