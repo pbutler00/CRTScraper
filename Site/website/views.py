@@ -97,7 +97,8 @@ def results():
                         if row not in seperate_searches[index+1]:
                             whole_search.append(row)
         else:
-            whole_search = seperate_searches[0]
+            if len(seperate_searches) != 0:
+                whole_search = seperate_searches[0]
 
         start = request.form.get("from")
         start_dt = datetime.date(int(start[0:4]), int(start[5:7]), int(start[8:]))
@@ -165,4 +166,4 @@ def results():
                     whole_search_V3.remove(row)
 
 
-        return render_template("results.html", seperate_searches = seperate_searches, rows = whole_search_V3)
+        return render_template("results.html", length = len(whole_search_V3), rows = whole_search_V3)
