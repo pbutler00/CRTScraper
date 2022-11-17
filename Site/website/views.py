@@ -165,5 +165,7 @@ def results():
                 if (row['CRTinText'] == "CRT doesn't appear"):
                     whole_search_V3.remove(row)
 
+        if (len(keywords) == 0):
+            whole_search_V3 = query_db("SELECT * FROM data WHERE Text LIKE '%" "%'")
 
-        return render_template("results.html", length = len(whole_search_V3), rows = whole_search_V3)
+        return render_template("results.html", seperate_searches = seperate_searches, rows = whole_search_V3, length = len(whole_search_V3))
