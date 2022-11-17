@@ -27,7 +27,7 @@ h1{
 }
   h3 {
     margin-bottom: 0px;
-    font-size: 1.1em;
+    font-size: 1.2em;
   }
   
   select option{
@@ -72,4 +72,21 @@ h1{
 
   .link:hover{
     color: cadetblue;
+    text-decoration: underline;
+  }
+
+  .bottomspace {
+    margin-bottom: 18px;
+  }
+
+  em {
+    font-size: 1em;
+  }
+  
+  .smalltext {
+    font-size: 0.9em;
+  }
+
+  hr.new {
+    border-top: 1px solid lightgray;
   }
