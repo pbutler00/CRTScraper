@@ -60,42 +60,89 @@
                     </select>
                 </p>
 
+                <p id="thirdKeyword">
+                    <label>KEYWORD</br> 
+                    <select name="andor2" id="andor2">
+                        <option value="and" id="and">AND</option>
+                        <option value="or" id="or">OR</option>
+                        <option value="not" id="not">NOT</option>
+                    </select>
 
+                    <input name="kw3" type="text" size="30" id="kw3"placeholder='e.g."Election"'></label>
+                    
+                    <select name="fields3" id="fields3">
+                        <option value="all fields">All fields</option>
+                        <option value="Title">Title</option>
+                        <option value="Author">Author</option>
+                        <option value="Text">Full Text</option>
+                        <option value="Keywords">Keywords</option>
+                    </select>
+                </p>
+
+                <script> document.getElementById("thirdKeyword").style.display = "none"; </script>
+
+                <p id="fourthKeyword">
+                    <label>KEYWORD</br> 
+                    <select name="andor3" id="andor3">
+                        <option value="and" id="and">AND</option>
+                        <option value="or" id="or">OR</option>
+                        <option value="not" id="not">NOT</option>
+                    </select>
+
+                    <input name="kw4" type="text" size="30" id="kw4"placeholder='e.g."Election"'></label>
+                    
+                    <select name="fields4" id="fields4">
+                        <option value="all fields">All fields</option>
+                        <option value="Title">Title</option>
+                        <option value="Author">Author</option>
+                        <option value="Text">Full Text</option>
+                        <option value="Keywords">Keywords</option>
+                    </select>
+                </p>
+
+                <script> document.getElementById("fourthKeyword").style.display = "none"; </script>
+
+                <p id="fifthKeyword">
+                    <label>KEYWORD</br> 
+                    <select name="andor4" id="andor4">
+                        <option value="and" id="and">AND</option>
+                        <option value="or" id="or">OR</option>
+                        <option value="not" id="not">NOT</option>
+                    </select>
+
+                    <input name="kw5" type="text" size="30" id="kw5"placeholder='e.g."Election"'></label>
+                    
+                    <select name="fields5" id="fields5">
+                        <option value="all fields">All fields</option>
+                        <option value="Title">Title</option>
+                        <option value="Author">Author</option>
+                        <option value="Text">Full Text</option>
+                        <option value="Keywords">Keywords</option>
+                    </select>
+                </p>
+
+                <script> document.getElementById("fifthKeyword").style.display = "none"; </script>
 
                 <script>
-                    $(function(){
+                    var counter = 2; 
+                    function myFunction() {
+                        if (counter == 2) {
+                            var x = document.getElementById("thirdKeyword");
+                        } else if (counter == 3) {
+                            var x = document.getElementById("fourthKeyword");
+                        } else if (counter == 4) {
+                            var x = document.getElementById("fifthKeyword");
+                        }
+                        if (x.style.display === "none") {
+                            x.style.display = "block";
+                        }
+                        counter += 1;
+                    }
 
-                        var more_fields = `
-                                <p>
-                                    <label>KEYWORD</br> 
-                                        <select name="andor" id="andor">
-                                        <option value="and" id="and">AND</option>
-                                        <option value="or" id="or">OR</option>
-                                        <option value="not" id="not">NOT</option>
-                                    </select>
-
-                                    <input name="kw1" type="text" size="30" id="kw1"placeholder='e.g."Election"'></label>
-                                    
-                                    <select name="fields" id="fields">
-                                        <option value="all fields">All fields</option>
-                                        <option value="title">Title</option>
-                                        <option value="full text">Full Text</option>
-                                        <option value="tags">Tags</option>
-                                    </select>
-                                </p>
-                            `;
-
-                $('#add-search-field').on('click', (function (e) {
-                    e.preventDefault();
-                    $(".input-fields").append(more_fields);
-                }));
-
-                });
                 </script>
 
-
                 <p>
-                    <button class="pagebutton" id="add-search-field">Add keyword</button>
+                    <button class="pagebutton" type="button" id="add-search-field" onclick="myFunction()">Add keyword</button>
                 </p>
 
                 <h2>Narrow Results</h2>
