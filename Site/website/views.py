@@ -54,6 +54,8 @@ def results():
             andors.append(request.form.get("andor"+str(counter)+""))
             counter += 1
 
+        andors = andors[:len(keywords) - 1]
+
         counter = len(keywords)
         seperate_searches = []
         for i in range(counter):
@@ -79,8 +81,13 @@ def results():
                     for row in seperate_searches[index+1]:
                         if row in seperate_searches[0]:
                             whole_search.append(row)
+                    for row in seperate_searches[0]:
+                        if row not in seperate_searches[index+1] and row in whole_search:
+                            whole_search.remove(row)
 
                 elif item == 'or':
+                    for row in seperate_searches[0]:
+                        whole_search.append(row)
                     for row in seperate_searches[index+1]:
                         if row not in seperate_searches[0]:
                             whole_search.append(row)
@@ -149,5 +156,13 @@ def results():
                 if (article_type == "non-text"):
                     if (row['Format'] == "Non-Text"):
                         whole_search_V3.append(row)
+        
+        explicit_inclusion = request.form.get("appearance")
 
-        return render_template("results.html", rows = whole_search_V3)
+        if (explicit_inclusion):
+            for row in whole_search_V3:
+                if (row['CRTinText'] == "CRT doesn't appear"):
+                    whole_search_V3.remove(row)
+
+
+        return render_template("results.html", seperate_searches = seperate_searches, rows = whole_search_V3)
